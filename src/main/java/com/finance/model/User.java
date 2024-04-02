@@ -6,6 +6,7 @@ import com.finance.common.AuditableEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +33,7 @@ public class User extends AuditableEntity implements Serializable {
     private String idValue;
 
     @Column(nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private IdType idType; // idType 컬럼 추가
 
     // protected User() {

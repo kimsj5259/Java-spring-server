@@ -30,6 +30,8 @@ public class UserService {
 
     @Transactional
     public ApiResponse registerUser(User userRequest) {
+        logger.info("registerUser entered");
+        
         try {
             validateSignupRequest(userRequest);
 
@@ -61,7 +63,7 @@ public class UserService {
     private void validateIdType(User.IdType idType) {
         logger.info("This is an info log message=====");
         if (idType != User.IdType.REG_NO && idType != User.IdType.BUSINESS_NO) {
-            throw new InvalidParameterException("잘못된 파라미터입니다.");
+            throw new InvalidParameterException("잘못된 파라미터입니다, REG_NO 혹은 BUSINESS_NO만 허용됩니다.");
         }
     }
 
@@ -74,6 +76,9 @@ public class UserService {
     
     @Transactional
     public ApiResponse authenticateUser(User userRequest) {
+        logger.info("authenticateUser entered");
+        // logger.info("Yoooooo Hereeeee");
+
         try {
             validateLoginRequest(userRequest);
 
