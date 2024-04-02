@@ -36,10 +36,10 @@ public class User extends AuditableEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private IdType idType; // idType 컬럼 추가
 
-    // protected User() {
-    //     // no-args constructor required by JPA spec
-    //     // this one is protected since it should not be used directly
-    // }
+    protected User() {
+        // no-args constructor required by JPA spec
+        // this one is protected since it should not be used directly
+    }
 
     public User(String userId, String password, String name, IdType idType, String idValue) {
         this.userId = userId;

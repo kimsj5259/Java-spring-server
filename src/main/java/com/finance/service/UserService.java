@@ -77,15 +77,16 @@ public class UserService {
     @Transactional
     public ApiResponse authenticateUser(User userRequest) {
         logger.info("authenticateUser entered");
-        // logger.info("Yoooooo Hereeeee");
 
         try {
-            validateLoginRequest(userRequest);
+            if (userRequest.getUserId() == null || userRequest.getPassword() == null) {
+                throw new InvalidParameterException("userId 또는 password가 빈값은 안 됩니다.");
+            }
 
             // 여기서 userId와 password를 확인하여 인증 로직을 추가
             User user = userRepository.findByUserId(userRequest.getUserId())
-                    .orElseThrow(() -> new InvalidParameterException("유효하지 않은 userId입니다."));
-
+                .orElseThrow(() -> new InvalidParameterException("유효하지 않은 userId입니다."));
+            
             if (!user.getPassword().equals(encryptLetter(userRequest.getPassword()))) {
                 throw new InvalidParameterException("잘못된 비밀번호입니다.");
             }
@@ -96,13 +97,6 @@ public class UserService {
         } catch (InvalidParameterException e) {
             return new ApiResponse(400, e.getMessage());
         }   
-    }
-
-    private void validateLoginRequest(User userRequest) {
-        // 로그인 요청에 대한 유효성 검증 로직을 추가
-        if (userRequest.getUserId() == null || userRequest.getPassword() == null) {
-            throw new InvalidParameterException("유효하지 않은 userId 또는 password입니다.");
-        }
     }
 
     private String generateAccessToken(String userId) {
