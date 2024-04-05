@@ -22,8 +22,6 @@ public class UserService {
     @Autowired // 이것에 대한 정확한 이해 필요.
     private PasswordEncoder passwordEncoder;
 
-    // @Autowired
-    // public BCryptPasswordEncoder letterEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
@@ -35,11 +33,9 @@ public class UserService {
 
             User user = new User(userRequest.getUserId(),
                                 passwordEncoder.encode(userRequest.getPassword()),
-                                // encryptLetter(userRequest.getPassword()),
                                 userRequest.getName(),
                                 userRequest.getIdType(),
                                 passwordEncoder.encode(userRequest.getIdValue()));
-                                // encryptLetter(userRequest.getIdValue()));
 
             userRepository.save(user);
             return  new ApiResponse(200, "OK");
@@ -65,12 +61,6 @@ public class UserService {
         if (idType != User.IdType.REG_NO && idType != User.IdType.BUSINESS_NO) {
             throw new InvalidParameterException("잘못된 파라미터입니다, REG_NO 혹은 BUSINESS_NO만 허용됩니다.");
         }
-    }
-
-    private String encryptLetter(String letter) {
-        // Password 암호화 로직을 적용
-        // return letterEncoder.encode(letter);
-        return letter;
     }
 
     
