@@ -1,16 +1,11 @@
 package com.finance.service;
 
 import java.security.InvalidParameterException;
-import java.util.Date;
-import java.util.Optional;
-
-// import io.jsonwebtoken.Jwts;
-// import io.jsonwebtoken.SignatureAlgorithm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +19,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired // 이것에 대한 정확한 이해 필요.
+    private PasswordEncoder passwordEncoder;
+
     // @Autowired
     // public BCryptPasswordEncoder letterEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -36,10 +34,12 @@ public class UserService {
             validateSignupRequest(userRequest);
 
             User user = new User(userRequest.getUserId(),
-                                encryptLetter(userRequest.getPassword()),
+                                passwordEncoder.encode(userRequest.getPassword()),
+                                // encryptLetter(userRequest.getPassword()),
                                 userRequest.getName(),
                                 userRequest.getIdType(),
-                                encryptLetter(userRequest.getIdValue()));
+                                passwordEncoder.encode(userRequest.getIdValue()));
+                                // encryptLetter(userRequest.getIdValue()));
 
             userRepository.save(user);
             return  new ApiResponse(200, "OK");
@@ -87,8 +87,8 @@ public class UserService {
             User user = userRepository.findByUserId(userRequest.getUserId())
                 .orElseThrow(() -> new InvalidParameterException("유효하지 않은 userId입니다."));
             
-            if (!user.getPassword().equals(encryptLetter(userRequest.getPassword()))) {
-                throw new InvalidParameterException("잘못된 비밀번호입니다.");
+            if (!passwordEncoder.matches(userRequest.getPassword(), user.getPassword())) {
+                throw new InvalidParameterException("잘못된 password입니다.");
             }
 
             // 가상의 토큰 발행 (실제 사용시에는 보안을 고려하여 안전한 방법으로 처리해야 함)
