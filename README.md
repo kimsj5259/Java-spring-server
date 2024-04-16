@@ -1,4 +1,4 @@
-# finance
+# Java-spring-server
 
 1. openjdk version "17.0.10"
 2. Spring CLI v3.2.2
