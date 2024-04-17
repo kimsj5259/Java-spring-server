@@ -9,7 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.finance.common.ApiResponse;
+import com.finance.dto.ApiResponse;
+import com.finance.dto.LoginResponse;
 import com.finance.model.User;
 import com.finance.repository.UserRepository;
 
@@ -83,7 +84,7 @@ public class UserService {
 
             // 가상의 토큰 발행 (실제 사용시에는 보안을 고려하여 안전한 방법으로 처리해야 함)
             String accessToken = generateAccessToken(userRequest.getUserId());
-            return new ApiResponse(200, "OK");
+            return new LoginResponse(200, "OK", accessToken);
         } catch (InvalidParameterException e) {
             return new ApiResponse(400, e.getMessage());
         }   

@@ -1,4 +1,4 @@
-package com.finance.common;
+package com.finance.dto;
 
 public class ApiResponse {
 
@@ -18,9 +18,4 @@ public class ApiResponse {
     public String getResultMsg() {
         return resultMsg;
     }
-
-    // token이 null이거나 resultCode가 200이 아니면 해당 키를 반환하지 않도록 수정
-    // public String getToken() {
-    //     return (token == null || resultCode != 200) ? null : token;
-    // }
 }
