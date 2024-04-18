@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finance.common.JwtUtil;
 import com.finance.dto.ApiResponse;
 import com.finance.dto.LoginResponse;
 import com.finance.model.User;
@@ -22,6 +23,9 @@ public class UserService {
 
     @Autowired // 이것에 대한 정확한 이해 필요.
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtutil;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -83,21 +87,10 @@ public class UserService {
             }
 
             // 가상의 토큰 발행 (실제 사용시에는 보안을 고려하여 안전한 방법으로 처리해야 함)
-            String accessToken = generateAccessToken(userRequest.getUserId());
+            String accessToken = jwtutil.createJwtToken(userRequest.getUserId());
             return new LoginResponse(200, "OK", accessToken);
         } catch (InvalidParameterException e) {
             return new ApiResponse(400, e.getMessage());
         }   
-    }
-
-    private String generateAccessToken(String userId) {
-        // 30분 후에 만료되는 가상의 access_token 발행
-        // Date expiration = new Date(System.currentTimeMillis() + (30 * 60 * 1000));
-        // return Jwts.builder()
-        //         .setSubject(userId)
-        //         .setExpiration(expiration)
-        //         .signWith(SignatureAlgorithm.HS256, "secretKey") // secretKey는 보안을 위해 안전한 값으로 대체해야 함
-        //         .compact();
-        return "tWTO4dkT8SGtoirC0z84k3/X+/vqWrAw9YHzEH+PQG8=";
     }
 }
