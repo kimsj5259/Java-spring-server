@@ -25,7 +25,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtUtil jwtutil;
+    private static JwtUtil jwtutil; // private 뒤에 static 선언 후 로그인 동작
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 

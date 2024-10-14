@@ -1,11 +1,12 @@
 package com.finance.common;
 
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
-import javax.crypto.SecretKey;
-import java.util.Date;
 
 public class JwtUtil {
     private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
